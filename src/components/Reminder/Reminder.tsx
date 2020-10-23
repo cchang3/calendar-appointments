@@ -1,7 +1,8 @@
 import React from 'react';
 import { WithStyles, withStyles, Theme, createStyles } from '@material-ui/core/styles';
-import Chip from '@material-ui/core/Chip';
 import { Typography } from '@material-ui/core';
+
+/** This is a brand new component made for generating reminders. I needed it to make it show up in both the calendar and calendar day modules. The css is to make sure the overflow is working properly. Decided to use a typography element to display the information since it was more responsive. */
 
 const styles = (theme: Theme) => createStyles({
     root:{
@@ -24,11 +25,11 @@ interface Props extends WithStyles<typeof styles>{
 	color?: string,
 	message?: string
 }
+
 const Reminder = (props: Props) => {
     const { classes, date, message, color } = props;
     return (
         <div className={classes.root} style={{backgroundColor:color}} >
-            {/* <Chip className={classes.chip} label={date+": "+ message} style={{backgroundColor:color}}  />  */}
             <Typography className={classes.chip}>{date+": "+ message}</Typography>
         </div>
     );

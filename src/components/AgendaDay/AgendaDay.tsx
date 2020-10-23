@@ -43,7 +43,7 @@ interface Props extends WithStyles<typeof styles>{
 	onClose: () => void
 }
 
-
+/** Similar logic applied here to get the reminders to populate the modal. Added a new util to get the reminders for the day. If no reminders are available, show that there arent any that day */
 
 const AgendaDay = (props: Props) => {
 	const { classes, agendaStatus, onClose } = props;

@@ -10,6 +10,7 @@ interface State {
 		reminders: Array<any>
 	}
 }
+/** added reminder state */
 
 const mapStateToProps = (state:State) => {
 	return { 

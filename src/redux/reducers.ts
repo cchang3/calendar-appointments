@@ -16,10 +16,12 @@ const initialAddReminderState = {
 	isOpen: false
 }
 
+/**Empty initial state */
 const reminderInitialState ={
 	reminders: []
 }
 
+/** Added a new reducer to handle reminder state, it will deliver the reminders submitted from the ui **/
 const remindersReducer = (state = reminderInitialState, action: any) => {
 	switch (action.type) {
 		case SAVE_REMINDER:
@@ -63,12 +65,11 @@ function addReminderStatus( state = initialAddReminderState, action: any ) {
 	}
 }
 
+/** Added reminders to the combine reducers */
 const calendarApp = combineReducers( {
 	agendaStatus,
 	addReminderStatus,
 	remindersReducer
 } )
-
-export type RootState = ReturnType<typeof calendarApp>;
 
 export default calendarApp;

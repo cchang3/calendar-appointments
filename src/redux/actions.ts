@@ -6,6 +6,8 @@ export const OPEN_ADD_REMINDER = 'OPEN_ADD_REMINDER';
 export const CLOSE_ADD_REMINDER = 'CLOSE_ADD_REMINDER';
 export const SAVE_REMINDER = 'SAVE_REMINDER';
 
+/**added save reminder type and interface for reminderObj containing information received from ui */
+
 interface DateObj {
 	date: Date
 }
@@ -33,6 +35,7 @@ export function closeAddReminder() {
 	return { type: CLOSE_ADD_REMINDER };
 }
 
+/** Added new action to save data into store */
 export function saveReminder(reminderObj: ReminderObj) {
 	return { type: SAVE_REMINDER, payload: reminderObj};
 }

@@ -4,7 +4,6 @@ import deepPurple from '@material-ui/core/colors/deepPurple';
 import { WithStyles, withStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { isSameMonth, isSameDay, getDate, isEqual } from 'date-fns';
 import { useSelector } from 'react-redux';
-import { getRemindersByDay } from '../../utils/reminderUtils';
 import Reminder from '../Reminder/Reminder';
 import { ReminderObj } from '../../redux/actions';
 
@@ -73,6 +72,7 @@ interface Props extends WithStyles<typeof styles>{
 		reminders?: Array<ReminderObj>
 	},
 }
+/** Updated the inface to include the reminders. Received the states of the reminders and filtered to show reminders on the correct day. Then mapped the reminders so they show up properly. Finally added a limit to the max amount of reminders shown per cell. Open cell to see all the reminders */
 
 const CalendarDay = (props: Props) => {
 	const { classes, dateObj, calendarDate, onDayClick, } = props;
@@ -84,10 +84,9 @@ const CalendarDay = (props: Props) => {
 		focused ? classes.focusedAvatar :
 		classes.dateNumber;
 	const reminders = useSelector((state: Props) => state.remindersReducer.reminders);
-	const reminderList = reminders.filter((day)=>isEqual(day.date.getDate(), dateObj.date.getDate()));
+	const reminderList = reminders.filter((day)=> isEqual(day.date.getDate(),  dateObj.date.getDate()) && isSameMonth(day.date, dateObj.date));
 	const onMouseOver = () => setFocused(true)
 	const onMouseOut = () => setFocused(false)
-	let key=0;
 	
 
 	return (
@@ -104,7 +103,7 @@ const CalendarDay = (props: Props) => {
 			<Avatar className={ avatarClass }>{ getDate( dateObj.date ) }</Avatar>
 			<div className={ classes.remindersContainer }>
 				{reminderList.slice(0,4).map((reminder, i) => (					
-					<Reminder key={key++} date={reminder.date} color={reminder.color} message={reminder.message} />
+					<Reminder key={i} date={reminder.date} color={reminder.color} message={reminder.message} />
 					 )) 
 				}
 			</div>

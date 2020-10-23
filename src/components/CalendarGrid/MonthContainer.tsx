@@ -14,6 +14,7 @@ const styles = (theme: Theme) => createStyles({
 	}
 });
 
+/** Added reminder reducer to this interface */
 interface Props extends WithStyles<typeof styles>{
 	calendarCells: {
 		date: Date
@@ -26,7 +27,6 @@ interface Props extends WithStyles<typeof styles>{
 
 const MonthContainer = ( props: Props ) =>
 	{
-	// console.log(props.calendarCells)
 	return <div className={ props.classes.monthContainer }>
 		{ props.calendarCells.map( ( dateObj, i ) =>
 			<CalendarDayContainer key={ i } calendarDate={ props.date } dateObj={ dateObj } />

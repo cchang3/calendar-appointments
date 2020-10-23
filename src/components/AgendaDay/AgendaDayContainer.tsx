@@ -19,6 +19,7 @@ interface State {
 		reminders: Array<reminderArr>
 	}
 }
+/** Added Reminder state */
 
 const mapStateToProps = ( state: State, ownProps: Props ) => {
 	const { agendaStatus, remindersReducer } = state;
