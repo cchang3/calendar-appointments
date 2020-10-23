@@ -4,17 +4,25 @@ import { closeAgenda } from '../../redux/actions';
 
 interface Props {}
 
+interface reminderArr {
+	date: Date,
+	color: string,
+	message: string
+}
+
 interface State {
 	agendaStatus: {
 		isOpen: boolean,
 		date: Date
+	},
+	remindersReducer: {
+		reminders: Array<reminderArr>
 	}
 }
 
 const mapStateToProps = ( state: State, ownProps: Props ) => {
-	const { agendaStatus } = state;
-
-	return { agendaStatus };
+	const { agendaStatus, remindersReducer } = state;
+	return { agendaStatus, remindersReducer };
 }
 
 const mapDispatchToProps = (dispatch: any) => {

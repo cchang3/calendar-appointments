@@ -7,8 +7,11 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography'
 import { WithStyles, withStyles, Theme, createStyles } from '@material-ui/core/styles';
-
 import * as dateFns from 'date-fns';
+import { useSelector } from 'react-redux';
+import Reminder from '../Reminder/Reminder';
+import { getRemindersByDay } from '../../utils/reminderUtils';
+import { ReminderObj } from '../../redux/actions';
 
 const styles = (theme: Theme) => createStyles({
 	remindersContainer: {
@@ -28,18 +31,25 @@ const styles = (theme: Theme) => createStyles({
 	}
 });
 
+
 interface Props extends WithStyles<typeof styles>{
 	agendaStatus: {
 		isOpen: boolean,
-		date: Date
-	}
+		date: Date,
+	},
+	remindersReducer:{
+		reminders: Array<ReminderObj>
+	},
 	onClose: () => void
 }
 
+
+
 const AgendaDay = (props: Props) => {
 	const { classes, agendaStatus, onClose } = props;
-	const dateTitle = agendaStatus.date ? dateFns.format( agendaStatus.date, 'LLLL do, yyyy' ) : 'Closing'
-
+	const reminders = useSelector((state: Props) => getRemindersByDay(state.remindersReducer.reminders, agendaStatus.date));
+	const dateTitle = agendaStatus.date ? dateFns.format( agendaStatus.date, 'LLLL do, yyyy' ) : 'Closing';
+	
 	return (
 		<Dialog
 			open={ agendaStatus.isOpen }
@@ -56,9 +66,11 @@ const AgendaDay = (props: Props) => {
 			</DialogTitle>
 			<Divider light />
 			<DialogContent className={ classes.remindersContainer }>
-				<Typography>
-					Use this space to list the reminders.
-				</Typography>
+				{
+					reminders.length > 0  ? reminders.map((reminder, i) => (
+					<Reminder key={i} date={reminder.date} color={reminder.color} message={reminder.message} />
+					 )) :  <Typography>No reminders today</Typography>
+				}
 			</DialogContent>
 		</Dialog>
 	);

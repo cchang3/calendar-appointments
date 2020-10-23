@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import deepPurple from '@material-ui/core/colors/deepPurple';
 import { WithStyles, withStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { isSameMonth, isSameDay, getDate } from 'date-fns';
-
+import { isSameMonth, isSameDay, getDate, isEqual } from 'date-fns';
+import { useSelector } from 'react-redux';
+import { getRemindersByDay } from '../../utils/reminderUtils';
+import Reminder from '../Reminder/Reminder';
+import { ReminderObj } from '../../redux/actions';
 
 const styles = (theme: Theme) => createStyles({
 	dayCell: {
@@ -65,11 +68,14 @@ interface DateObj {
 interface Props extends WithStyles<typeof styles>{
 	calendarDate: Date,
 	dateObj: DateObj,
-	onDayClick: (dateObj: DateObj) => void
+	onDayClick: (dateObj: DateObj) => void,
+	remindersReducer?:{
+		reminders?: Array<ReminderObj>
+	},
 }
 
 const CalendarDay = (props: Props) => {
-	const { classes, dateObj, calendarDate, onDayClick } = props;
+	const { classes, dateObj, calendarDate, onDayClick, } = props;
 	const [ focused, setFocused ] = useState(false)
 
 	const isToday = isSameDay( dateObj.date, new Date() );
@@ -77,9 +83,12 @@ const CalendarDay = (props: Props) => {
 		isToday ? classes.todayAvatar :
 		focused ? classes.focusedAvatar :
 		classes.dateNumber;
-
+	const reminders = useSelector((state: Props) => state.remindersReducer.reminders);
+	const reminderList = reminders.filter((day)=>isEqual(day.date.getDate(), dateObj.date.getDate()));
 	const onMouseOver = () => setFocused(true)
 	const onMouseOut = () => setFocused(false)
+	let key=0;
+	
 
 	return (
 		<div
@@ -94,10 +103,12 @@ const CalendarDay = (props: Props) => {
 		>
 			<Avatar className={ avatarClass }>{ getDate( dateObj.date ) }</Avatar>
 			<div className={ classes.remindersContainer }>
-				{/* reminders go here */}
+				{reminderList.slice(0,4).map((reminder, i) => (					
+					<Reminder key={key++} date={reminder.date} color={reminder.color} message={reminder.message} />
+					 )) 
+				}
 			</div>
 		</div>
 	)
 }
-
 export default withStyles( styles )( CalendarDay );

@@ -5,13 +5,17 @@ import { closeAddReminder } from '../../redux/actions';
 interface State {
 	addReminderStatus: {
 		isOpen: boolean
+	},
+	remindersReducer: {
+		reminders: Array<any>
 	}
 }
 
 const mapStateToProps = (state:State) => {
 	return { 
-		isOpen: state.addReminderStatus.isOpen
-	};
+		isOpen: state.addReminderStatus.isOpen,
+		reminders: state.remindersReducer.reminders
+	}
 }
 
 const mapDispatchToProps = (dispatch: any) => {

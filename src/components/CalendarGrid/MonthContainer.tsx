@@ -1,6 +1,7 @@
 import React from 'react';
 import { WithStyles, withStyles, Theme, createStyles } from '@material-ui/core/styles';
 import CalendarDayContainer from '../CalendarDay/CalendarDayContainer';
+import { ReminderObj } from '../../redux/actions';
 
 const styles = (theme: Theme) => createStyles({
 	monthContainer: {
@@ -18,13 +19,19 @@ interface Props extends WithStyles<typeof styles>{
 		date: Date
 	}[],
 	date: Date,
+	remindersReducer?: {
+		reminders?: Array <ReminderObj>
+	}
 }
 
 const MonthContainer = ( props: Props ) =>
-	<div className={ props.classes.monthContainer }>
+	{
+	// console.log(props.calendarCells)
+	return <div className={ props.classes.monthContainer }>
 		{ props.calendarCells.map( ( dateObj, i ) =>
 			<CalendarDayContainer key={ i } calendarDate={ props.date } dateObj={ dateObj } />
 		) }
 	</div>
+	}
 
 export default withStyles( styles )( MonthContainer );
